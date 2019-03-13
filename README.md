@@ -1,5 +1,6 @@
 # Emotion-Based-Music-Recommendation-System-Using-Facial-Recognition
- Recognition of facial expressions is used to identify the basic human emotions. Powered by OpenCV and Deep Learning.
+ Recognition of facial expressions is used to identify the basic human emotions.    
+ Powered by OpenCV and Deep Learning.
 
 # Deep Learning Model
 Implement a general Conventional Neural Network (CNN) building framework for designing real-time CNNs.
