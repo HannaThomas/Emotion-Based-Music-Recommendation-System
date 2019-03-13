@@ -7,4 +7,4 @@ Implement a general Conventional Neural Network (CNN) building framework for des
 #Credit
 Computer vision powered by OpenCV.
 Neural network scaffolding powered by Keras with Tensorflow.
-Convolutional Neural Network (CNN) deep learning architecture 
+Convolutional Neural Network (CNN) deep learning architecture. 
