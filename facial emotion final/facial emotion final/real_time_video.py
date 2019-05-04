@@ -3,7 +3,8 @@ import imutils
 import cv2
 from keras.models import load_model
 import numpy as np
-
+from playsound import playsound
+import time
 # parameters for loading data and images
 detection_model_path = 'haarcascade_files/haarcascade_frontalface_default.xml'
 emotion_model_path = 'models/_mini_XCEPTION.102-0.66.hdf5'
@@ -12,18 +13,18 @@ emotion_model_path = 'models/_mini_XCEPTION.102-0.66.hdf5'
 # loading models
 face_detection = cv2.CascadeClassifier(detection_model_path)
 emotion_classifier = load_model(emotion_model_path, compile=False)
-EMOTIONS = ["angry" ,"disgust","scared", "happy", "sad", "surprised",
- "neutral"]
+EMOTIONS = ["angry","disgust","sad","happy","scared","surprised","neutral"]
 
 
 #feelings_faces = []
 #for index, emotion in enumerate(EMOTIONS):
-    #feelings_faces.append(cv2.imread('emojis/' + emotion + '.png', -1))
+   # feelings_faces.append(cv2.imread('emojis/' + emotion + '.png', -1))
 
 # starting video streaming
 cv2.namedWindow('your_face')
 camera = cv2.VideoCapture(0)
-while True:
+#while True:
+for i in range(0,200):
     frame = camera.read()[1]
     #reading the frame
     frame = imutils.resize(frame,width=300)
@@ -46,38 +47,112 @@ while True:
         
         
         preds = emotion_classifier.predict(roi)[0]
+        print(preds)
         emotion_probability = np.max(preds)
         label = EMOTIONS[preds.argmax()]
 
  
-    for (i, (emotion, prob)) in enumerate(zip(EMOTIONS, preds)):
-                # construct the label text
+#    try:
+        for (i, (emotion, prob)) in enumerate(zip(EMOTIONS, preds)):
+            # construct the label text
+            
+            if prob > 0.3:
+                print(emotion)
                 text = "{}: {:.2f}%".format(emotion, prob * 100)
-
+                print(text)
                 # draw the label + probability bar on the canvas
-               # emoji_face = feelings_faces[np.argmax(preds)]
-
-                
+                # emoji_face = feelings_faces[np.argmax(preds)]
+    
                 w = int(prob * 300)
                 cv2.rectangle(canvas, (7, (i * 35) + 5),
-                (w, (i * 35) + 35), (0, 0, 255), -1)
+                                      (w, (i * 35) + 35), (0, 0, 255), -1)
                 cv2.putText(canvas, text, (10, (i * 35) + 23),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.45,
-                (255, 255, 255), 2)
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.45,
+                                 (255, 255, 255), 2)
                 cv2.putText(frameClone, label, (fX, fY - 10),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
                 cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH),
-                              (0, 0, 255), 2)
-#    for c in range(0, 3):
-#        frame[200:320, 10:130, c] = emoji_face[:, :, c] * \
-#        (emoji_face[:, :, 3] / 255.0) + frame[200:320,
-#        10:130, c] * (1.0 - emoji_face[:, :, 3] / 255.0)
+                                  (0, 0, 255), 2)
+                    
+                cv2.imshow('your_face', frameClone)
+                cv2.imshow("Probabilities", canvas)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
+                
+                
+                
+                if emotion == 'happy':
+                    
+                    
+                    playsound('SONGS/happy/muthumazhyay.mp3')
+                    playsound('SONGS/happy/koodemele.mp3')
+                   
+                    camera.release()
+                    cv2.destroyAllWindows()
+                    time.sleep(20)
+                    break
+                
+                if emotion == 'sad':
+                    
+                    
+                    playsound('SONGS/sad/enn-kathalle.mp3')
+                    camera.release()
+                    cv2.destroyAllWindows()
+                    time.sleep(20)
+                    break
+                if emotion == 'neutral':
+                    
+                    
+                    playsound('SONGS/neutral/kanna-nee-thoogada.mp3')
+                    camera.release()
+                    cv2.destroyAllWindows()
+                    time.sleep(20)
+                    break
+                
+                if emotion == 'scared':
+                    
+                   
+                    playsound('SONGS/scared/Chandramukhi.mp3')
+                    camera.release()
+                    cv2.destroyAllWindows()
+                    time.sleep(20)
+                    break
+                
+                if emotion == 'surprised':
+                    
+                    
+                    playsound('SONGS/surprised/poona-usiru.mp3')
+                    camera.release()
+                    cv2.destroyAllWindows()
+                    time.sleep(20)
+                    break
+                
+                if emotion == 'angry':
+                    
+                    
+                    playsound('SONGS/angry/Kalippu-Premam.mp3')
+                    camera.release()
+                    cv2.destroyAllWindows()
+                    time.sleep(20)
+                    break
+                
+                if emotion == 'fear':
+                    
+                    
+                    playsound('SONGS/fear/agayam.mp3')
+                    camera.release()
+                    cv2.destroyAllWindows()
+                    time.sleep(20)
+                    break
+               
+    #    for c in range(0, 3):
+    #        frame[200:320, 10:130, c] = emoji_face[:, :, c] * \
+    #        (emoji_face[:, :, 3] / 255.0) + frame[200:320,
+    #        10:130, c] * (1.0 - emoji_face[:, :, 3] / 255.0)
+    #    except :
+    #        er = 'error'
+    
+
+    
 
 
-    cv2.imshow('your_face', frameClone)
-    cv2.imshow("Probabilities", canvas)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-camera.release()
-cv2.destroyAllWindows()
